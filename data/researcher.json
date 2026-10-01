@@ -1,0 +1,15 @@
+{
+    "email": "chercheur@example.com",
+    "password": "CnD4SUtq$*@",
+    "civility": "Mme",
+    "lastname": "Bouriga",
+    "firstname": "Yousra",
+    "country": "-Tunisia",
+    "nationality": "Tunisia",
+    "postalCode": "92250",
+    "city": "La Garenne-Colombes",
+    "tel": "0652395304",
+    "profile": "Researcher",
+    "domaine": "Computer Science",
+    "level":  "Doctorat / PhD" 
+  }

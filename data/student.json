@@ -1,0 +1,15 @@
+{
+    "email": "etudiant@example.com",
+    "password": "CnD4SUtq@!#",
+    "civility": "Mme",
+    "lastname": "Braham",
+    "firstname": "Etudiant",
+    "country": "-Tunisia",
+    "nationality": "Tunisia",
+    "postalCode": "75014",
+    "city": "Paris",
+    "tel": "0752395304",
+    "profile": "Students",
+    "domaine": "Chemistry",
+    "level":  "Master 2"
+  }
