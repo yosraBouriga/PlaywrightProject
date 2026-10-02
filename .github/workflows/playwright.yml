@@ -1,28 +1,26 @@
 name: Playwright Tests
 
 on:
-  push:
-    branches: [ main, master ]
-
-  pull_request:
-    branches: [ main, master ]
-
   workflow_dispatch:
+    inputs:
+      environment:
+        description: "Choisir l'environnement"
+        required: true
+        default: "test"
+        type: choice
+        options:
+          - test
+          - qa
 
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
 
-    # Exécute le même job sur les deux environnements
-    strategy:
-      matrix:
-        environment: [test, qa]
+    # Utilise l'environnement choisi
+    environment: ${{ inputs.environment }}
 
-    # Sélectionne l'environnement GitHub correspondant
-    environment: ${{ matrix.environment }}
-
-    # Récupère BASE_URL de l'environnement sélectionné
+    # Récupère BASE_URL de cet environnement GitHub
     env:
       BASE_URL: ${{ vars.BASE_URL }}
 
@@ -45,6 +43,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
-          name: playwright-report-${{ matrix.environment }}
+          name: playwright-report-${{ inputs.environment }}
           path: playwright-report/
           retention-days: 30
