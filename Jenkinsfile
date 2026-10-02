@@ -25,13 +25,12 @@ pipeline {
             }
         }
     }
-
-   post {
+post {
     always {
         publishHTML([
             reportDir: 'playwright-report',
             reportFiles: 'index.html',
-            reportName: 'Playwright Report',
+            reportName: 'Playwright HTML Report',
             keepAll: true,
             alwaysLinkToLastBuild: true,
             allowMissing: true
