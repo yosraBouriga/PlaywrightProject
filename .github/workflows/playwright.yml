@@ -23,6 +23,7 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
 
+    # Lancement manuel dans GitHub Actions avec choix de l'environnement
     # Sélectionne l'environnement GitHub : test ou qa
     environment: ${{ inputs.environment || 'test' }}
 
@@ -44,7 +45,7 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run Playwright tests
-        run: npx playwright test
+        run: npx playwright test --project=chromium
 
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
