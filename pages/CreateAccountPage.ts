@@ -48,7 +48,7 @@ export class CreateAccountPage {
         // Informations personnelles
         this.lastNameInput = page.locator('#edit-field-nom-0-value');
         this.firstNameInput = page.locator('#edit-field-prenom-0-value');
-        this.countryField = page.getByRole('textbox', { name: 'Pays de résidence*' })
+        this.countryField = page.getByLabel('Pays de résidence');
         this.nationalityField = page.locator('#edit-field-nationalite-0-target-id')
         this.secondNationalityField = page.getByRole(
             'textbox',
@@ -62,9 +62,8 @@ export class CreateAccountPage {
         this.phoneInput = page.locator('#edit-field-telephone-0-value');
         
         // Informations complémentaires
-        this.domaineField = page.getByRole('textbox', { name: 'Domaine d\'études' })
-        this.levelField = page.getByRole('textbox', { name: 'Niveau(x) d\'étude' })
-
+        this.domaineField = page.locator('#edit-field-domaine-etudes');
+        this.levelField = page.locator('#edit-field-niveaux-etude');
         
     }
 
@@ -94,8 +93,20 @@ export class CreateAccountPage {
         await this.firstNameInput.fill(firstName);
     }
     async selectCountry(country: string) {
+
         await this.countryField.click();
-        await this.page.getByText(country, { exact: true }).click();
+    
+        const visibleOption = this.page
+            .locator('.selectize-dropdown-content .option')
+            .filter({ hasText: country });
+    
+        if (await visibleOption.isVisible()) {
+            // Cas Desktop : dropdown Selectize
+            await visibleOption.click();
+        } else {
+            // Cas Mobile : select HTML
+            await this.countryField.selectOption({ label: country });
+        }
     }
 
     async selectNationality(nationality: string) {
@@ -126,13 +137,47 @@ export class CreateAccountPage {
             .click();
     }
     async selectDomaine(domaine: string) {
-        await this.domaineField.click();
-        await this.page.getByText(domaine, { exact: true }).click();
+
+        const selectizeInput =
+            this.page.locator('#edit-field-domaine-etudes-selectized');
+    
+        if (await selectizeInput.isVisible()) {
+    
+            // Version Selectize
+            await selectizeInput.click();
+    
+            await this.page
+                .locator('.selectize-dropdown-content .option')
+                .filter({ hasText: domaine })
+                .click();
+    
+        } else {
+    
+            // Version select HTML
+            await this.domaineField.selectOption({ label: domaine });
+        }
     }
 
     async selectLevel(level: string) {
-        await this.levelField.click();
-        await this.page.getByText(level, { exact: true }).click();
+
+        const selectizeInput =
+            this.page.locator('#edit-field-niveaux-etude-selectized');
+    
+        if (await selectizeInput.isVisible()) {
+    
+            // Cas Selectize
+            await selectizeInput.click();
+    
+            await this.page
+                .locator('.selectize-dropdown-content .option')
+                .filter({ hasText: level })
+                .click();
+    
+        } else {
+    
+            // Cas select HTML
+            await this.levelField.selectOption({ label: level });
+        }
     }
   
 }

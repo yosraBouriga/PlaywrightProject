@@ -19,10 +19,12 @@ test.describe('Création de compte Campus France', () => {
             const createAccountPage = new CreateAccountPage(page);
 
             // 1. Ouvrir la page de création de compte
-            await page.goto('/en/user/register', {
+            console.log('Base URL :', test.info().project.use.baseURL); // Afficher l'URL de base dans la console
+
+            await page.goto('./en/user/register', {
                 waitUntil: 'domcontentloaded'
             });
-
+            console.log('URL réelle :', page.url());
             // cookies 
             await page
     .getByRole('button', { name: 'OK, accept all' })
