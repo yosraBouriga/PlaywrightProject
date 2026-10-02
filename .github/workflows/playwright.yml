@@ -8,24 +8,19 @@ on:
     branches: [ main, master ]
 
   workflow_dispatch:
-    inputs:
-      environment:
-        description: "Choisir l'environnement"
-        required: true
-        default: "test"
-        type: choice
-        options:
-          - test
-          - qa
 
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
 
-    # Lancement manuel dans GitHub Actions avec choix de l'environnement
-    # Sélectionne l'environnement GitHub : test ou qa
-    environment: ${{ inputs.environment || 'test' }}
+    # Exécute le même job sur les deux environnements
+    strategy:
+      matrix:
+        environment: [test, qa]
+
+    # Sélectionne l'environnement GitHub correspondant
+    environment: ${{ matrix.environment }}
 
     # Récupère BASE_URL de l'environnement sélectionné
     env:
@@ -41,7 +36,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Playwright Browsers
+      - name: Install Chromium
         run: npx playwright install --with-deps chromium
 
       - name: Run Playwright tests
@@ -50,6 +45,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.environment }}
           path: playwright-report/
           retention-days: 30
