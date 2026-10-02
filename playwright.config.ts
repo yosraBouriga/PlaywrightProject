@@ -9,11 +9,11 @@ import path from 'path';
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 const environment = process.env.ENV || 'test';
-
 const baseURL =
-  environment === 'qa'
+  process.env.BASE_URL ||
+  (environment === 'qa'
     ? process.env.QA_URL
-    : process.env.TEST_URL;
+    : process.env.TEST_URL);
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
